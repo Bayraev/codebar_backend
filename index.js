@@ -3,14 +3,19 @@ const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
+// Since 2cn commit, creating auth for site
 
 const { MONGO_DB, PORT } = process.env;
 
 app.use(express.json({ extended: true }));
 app.use(cors());
 app.use(morgan('dev'));
+// We can use this route "/api" to got access to this route
+// app.use(require('/api'. './routes/routes'));
 app.use(require('./routes/routes'));
+app.use(cookieParser());
 
 mongoose.set('strictQuery', false);
 mongoose.connect(MONGO_DB, (error) => {

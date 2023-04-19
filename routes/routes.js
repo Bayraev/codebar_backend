@@ -1,4 +1,5 @@
 const { snippetsController } = require('../controllers/snippetsController');
+const { usersController } = require('../controllers/userController');
 
 const router = require('express').Router();
 
@@ -11,6 +12,11 @@ router.patch('/snippet/patch/:id', snippetsController.updateQuestion);
 // Удаление вопроса
 router.delete('/snippet/delete/:id', snippetsController.deleteSnippet);
 // // Удаление вопроса
-// router.delete('/patch/delete/:id', questionsController.deleteQuestion);
 
+// Auth
+router.post('/registration', usersController.registration);
+router.post('/login', usersController.login);
+router.post('/logout', usersController.logout);
+router.get('/activate/:link', usersController.activate); // endpoint for acc activation by link
+router.get('/refresh', usersController.refresh); // it gets new access and refresh tokens
 module.exports = router;
