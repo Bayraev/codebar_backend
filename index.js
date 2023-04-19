@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 // Since 2cn commit, creating auth for site
+// cookieParser, jsonwebtoken - for generating jwt, bcrypt - cryptography, uuid - generating random stuff for id for exmp
 
 const { MONGO_DB, PORT } = process.env;
 
