@@ -8,4 +8,4 @@ const snippetSchema = mongoose.Schema({
   image: Array,
 });
 
-module.exports = mongoose.model('Question', questionSchema);
+module.exports = mongoose.model('Snippets', snippetSchema);
