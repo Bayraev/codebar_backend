@@ -26,7 +26,6 @@ module.exports.snippetsController = {
       res.status(200).json(snippetModel);
     } catch (error) {
       res.status(400).json({ error: error });
-      console.log(error);
     }
   },
 
