@@ -37,11 +37,13 @@ const nodemailer = require('nodemailer');
 
 class MailService {
   constructor() {
+    // `this` here refers us to mailService object (make this function a bit global, for whole function 'MailService')
     this.transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: process.env.SMTP_PORT,
+      host: process.env.SMTP_HOST, // host of mail server
+      port: process.env.SMTP_PORT, // it's port
       secure: true, // only for 465 port, seems like
       auth: {
+        //some auth info about account 'sender' of mail. (auth in mail we use)
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASSWORD,
       },
@@ -50,12 +52,13 @@ class MailService {
 
   async sendActivationMail(to, link) {
     try {
-      console.log('debug mailService 1', process.env.SMTP_USER);
+      //
       await this.transporter.sendMail({
-        from: process.env.SMTP_USER,
-        to,
-        subject: 'Активация аккаунта на ' + process.env.API_URL,
-        text: '',
+        from: process.env.SMTP_USER, // sender's mail
+        to, // adresse mail
+        subject: 'Активация аккаунта на ' + process.env.API_URL, // subject of message
+        text: '', // text we dont use here, but..
+        // .. we use html here
         html: `
         <div>
           <h1>Для активации перейдите по ссылке</h1>
@@ -63,7 +66,6 @@ class MailService {
         </div>
       `,
       });
-      console.log('debug mailService 2');
     } catch (error) {
       console.error(error);
     }

@@ -35,4 +35,13 @@ module.exports.userService = {
     return { ...tokens, user: userDtoted }; // acces refresh token we put here, spreading tokens, and unformation about user
     // Next all this bullshit is going to Controllers, to be workable
   },
+
+  activate: async (activationLink) => {
+    const user = await userModel.findOne({ activationLink }); // Ищем пользователя по этой ссылке
+    if (!user) {
+      throw new Error('Некорректная ссылка активации');
+    }
+    user.isActivated = true; // Меняем значения активейтеда на тру
+    await user.save(); // сохраняем юзера
+  },
 };

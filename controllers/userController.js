@@ -31,7 +31,11 @@ module.exports.usersController = {
 
   activate: async (req, res, next) => {
     try {
+      const activationLink = req.params.link; // getting endpoint from req.params
+      await userService.activate(activationLink); // calling that service
+      return res.redirect(process.env.CLIENT_URL); // redirecting user to main page
     } catch (error) {}
+    console.log(error);
   },
 
   refresh: async (req, res, next) => {
