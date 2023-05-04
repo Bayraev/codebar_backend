@@ -4,6 +4,7 @@ const uuid = require('uuid');
 const MailService = require('./mailService');
 const { TokenService } = require('./tokenService');
 const userDto = require('../../dtos/userDto');
+const ApiError = require('../../exceptions/api-error');
 
 module.exports.userService = {
   registration: async (email, password) => {
@@ -12,7 +13,7 @@ module.exports.userService = {
 
     // is it possible to regist handler.
     if (candidate) {
-      throw new Error(`User with ${email} already exists`);
+      throw ApiError.BadRequest(`User with ${email} already exists`);
     }
     const passwordHash = await bcrypt.hash(password, 3); // password encryption (hashing). Ig hashing better than average encryption
     const activationLink = uuid.v4(); // 23rnu3-44wf4-42t24 lol
@@ -39,7 +40,7 @@ module.exports.userService = {
   activate: async (activationLink) => {
     const user = await userModel.findOne({ activationLink }); // Ищем пользователя по этой ссылке
     if (!user) {
-      throw new Error('Некорректная ссылка активации');
+      throw ApiError.BadRequest('Incorrect activation link');
     }
     user.isActivated = true; // Меняем значения активейтеда на тру
     await user.save(); // сохраняем юзера
