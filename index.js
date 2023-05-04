@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const errorMiddleware = require('./middlewares/error-middleware'); // custom error middleware
 require('dotenv').config();
 // Since 2cn commit, creating auth for site
 // cookieParser, jsonwebtoken - for generating jwt, bcrypt - cryptography, uuid - generating random stuff for id for exmp
@@ -17,6 +18,7 @@ app.use(morgan('dev'));
 // app.use(require('/api'. './routes/routes'));
 app.use(require('./routes/routes'));
 app.use(cookieParser());
+app.use(errorMiddleware);
 
 mongoose.set('strictQuery', false);
 mongoose.connect(MONGO_DB, (error) => {
