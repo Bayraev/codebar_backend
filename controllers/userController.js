@@ -16,17 +16,23 @@ module.exports.usersController = {
       });
 
       return res.json(userData); // return this data to user
-    } catch (error) {}
+    } catch (error) {
+      next(error); // if we get ApiError here, it will be proccessed accordingly
+    }
   },
 
   login: async (req, res, next) => {
     try {
-    } catch (error) {}
+    } catch (error) {
+      next(error);
+    }
   },
 
   logout: async (req, res, next) => {
     try {
-    } catch (error) {}
+    } catch (error) {
+      next(error);
+    }
   },
 
   activate: async (req, res, next) => {
@@ -35,11 +41,13 @@ module.exports.usersController = {
       await userService.activate(activationLink); // calling that service
       return res.redirect(process.env.CLIENT_URL); // redirecting user to main page
     } catch (error) {}
-    console.log(error);
+    next(error);
   },
 
   refresh: async (req, res, next) => {
     try {
-    } catch (error) {}
+    } catch (error) {
+      next(error);
+    }
   },
 };
