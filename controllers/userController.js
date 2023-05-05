@@ -1,9 +1,17 @@
 const { userService } = require('../service/authorization/userService');
+const { validationResult } = require('express-validator');
+const ApiError = require('../exceptions/api-error');
 
 // we need service to not make controllers to fat. We separete code.
 module.exports.usersController = {
   registration: async (req, res, next) => {
     try {
+      const errors = validationResult(req); // it will validate the necessary from req
+      // if its not empty, we put it in error handler
+      if (!errors.isEmpty()) {
+        // Here we see that we resends errors array to ApiError
+        return next(ApiError.BadRequest('Validation Error', errors.array()));
+      }
       const { email, password } = req.body;
       const userData = await userService.registration(email, password); // returns { ...tokens, user: userDtoted } from services
       // saving refreshToken in cookies (dont forget activate cookieParser middleware in index.js)
