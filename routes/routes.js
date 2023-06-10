@@ -6,13 +6,13 @@ const { body } = require('express-validator');
 const authMiddleware = require('../middlewares/auth-middleware');
 
 // Все вопросы
-router.get('/snippets', authMiddleware, snippetsController.getAllSnippets);
+router.get('/api/snippets', authMiddleware, snippetsController.getAllSnippets);
 // добавить вопросы
-router.post('/add_snippet', snippetsController.createSnippet);
+router.post('/api/new_snippet', snippetsController.createSnippet);
 // Обновление вопроса
-router.patch('/snippet/patch/:id', snippetsController.updateQuestion);
+router.patch('/api/snippet/patch/:id', snippetsController.updateQuestion);
 // Удаление вопроса
-router.delete('/snippet/delete/:id', snippetsController.deleteSnippet);
+router.delete('/api/snippet/delete/:id', snippetsController.deleteSnippet);
 // // Удаление вопроса
 
 // Auth
@@ -23,8 +23,8 @@ router.post(
   body('password').isLength({ min: 6, max: 24 }),
   usersController.registration,
 );
-router.post('/login', usersController.login);
-router.post('/logout', usersController.logout);
-router.get('/activate/:link', usersController.activate); // endpoint for acc activation by link
-router.get('/refresh', usersController.refresh); // it gets new access and refresh tokens
+router.post('/api/login', usersController.login);
+router.post('/api/logout', usersController.logout);
+router.get('/api/activate/:link', usersController.activate); // endpoint for acc activation by link
+router.get('/api/refresh', usersController.refresh); // it gets new access and refresh tokens
 module.exports = router;
