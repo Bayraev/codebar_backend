@@ -17,7 +17,7 @@ module.exports.usersController = {
       // saving refreshToken in cookies (dont forget activate cookieParser middleware in index.js)
       // maxAge we made 30 days by calculating
 
-      res.cookie('refreshToken: ', userData.refreshToken, {
+      res.cookie('refreshToken', userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true, // doesnt let change or get these cookie from JS
         // secure: true // if we use https
@@ -31,6 +31,14 @@ module.exports.usersController = {
 
   login: async (req, res, next) => {
     try {
+      const { email, password } = req.body;
+      const userData = await userService.login(email, password);
+      res.cookie('refreshToken', userData.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: true, // doesnt let change or get these cookie from JS
+        // secure: true // if we use https
+      });
+      return res.json(userData); // return this data to user
     } catch (error) {
       next(error);
     }
@@ -38,6 +46,10 @@ module.exports.usersController = {
 
   logout: async (req, res, next) => {
     try {
+      const { refreshToken } = req.cookies; // getting refresh token from cookies
+      const token = await userService.logout(refreshToken); // calling service
+      res.clearCookie('refreshToken'); // deleting refreshToken from cookies
+      res.json(token); //* Dont forget change it to status 200
     } catch (error) {
       next(error);
     }
@@ -54,6 +66,16 @@ module.exports.usersController = {
 
   refresh: async (req, res, next) => {
     try {
+      const { refreshToken } = req.cookies;
+
+      const userData = await userService.refresh(refreshToken);
+      // again saving up token as cookie
+      res.cookie('refreshToken', userData.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: true, // doesnt let change or get these cookie from JS
+        // secure: true // if we use https
+      });
+      return res.json(userData); // return this data to user
     } catch (error) {
       next(error);
     }

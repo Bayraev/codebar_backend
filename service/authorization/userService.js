@@ -19,12 +19,10 @@ module.exports.userService = {
     const activationLink = uuid.v4(); // 23rnu3-44wf4-42t24 lol
     const user = await userModel.create({ email, password: passwordHash, activationLink }); // creating a user
     // Sending email and uuid-activation endpoint to user
-    console.log('debugg 1');
     await MailService.sendActivationMail(
       email,
       `${process.env.API_URL}/activate/${activationLink}`,
     );
-    console.log('debugg 2');
     // next we're gotta to send user, but without pass. So we need dtos(data-transfer-only). user-dtos
     // so we need import it here
     const userDtoted = new userDto(user); // id, email, isActivated
@@ -37,6 +35,30 @@ module.exports.userService = {
     // Next all this bullshit is going to Controllers, to be workable
   },
 
+  login: async (email, password) => {
+    // compare this with registration function to understand functionality :)
+
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      throw ApiError.BadRequest(`User with ${email} email doesn't exist`);
+    }
+
+    const IsPasswordEquals = bcrypt.compare(password, user.password);
+    if (!IsPasswordEquals) {
+      throw ApiError.BadRequest('Wrong password');
+    }
+    const userDtoted = new userDto(user);
+    const tokens = TokenService.generateTokens({ ...userDtoted });
+
+    await TokenService.saveToken(userDtoted.id, tokens.refreshToken); // saving token for tokenmodel
+    return { ...tokens, user: userDtoted };
+  },
+
+  logout: async (refreshToken) => {
+    const token = await TokenService.removeToken(refreshToken);
+    return token;
+  },
+
   activate: async (activationLink) => {
     const user = await userModel.findOne({ activationLink }); // Ищем пользователя по этой ссылке
     if (!user) {
@@ -44,5 +66,27 @@ module.exports.userService = {
     }
     user.isActivated = true; // Меняем значения активейтеда на тру
     await user.save(); // сохраняем юзера
+  },
+
+  refresh: async (refreshToken) => {
+    if (!refreshToken) {
+      throw ApiError.UnaгthorizedError();
+    }
+
+    const userData = TokenService.validateAccessToken(refreshToken); // sent to validation. Gives back token with id etc.
+    const tokenFromDb = await TokenService.findOne(refreshToken); // gives back old token (need to check, validated our user or not)
+
+    if (!userData || !tokenFromDb) {
+      throw ApiError.UnaгthorizedError();
+    }
+
+    const user = await userModel.findById(userData.id); // we took it, cuz if user change his data, we can dinamically upd it.
+
+    //! DUBLICATED CODE:
+    const userDtoted = new userDto(user);
+    const tokens = TokenService.generateTokens({ ...userDtoted });
+
+    await TokenService.saveToken(userDtoted.id, tokens.refreshToken);
+    return { ...tokens, user: userDtoted };
   },
 };

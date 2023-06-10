@@ -16,8 +16,8 @@ app.use(cors());
 app.use(morgan('dev'));
 // We can use this route "/api" to got access to this route
 // app.use(require('/api'. './routes/routes'));
-app.use(require('./routes/routes'));
 app.use(cookieParser());
+app.use(require('./routes/routes'));
 app.use(errorMiddleware);
 
 mongoose.set('strictQuery', false);

@@ -3,9 +3,10 @@ const { usersController } = require('../controllers/userController');
 
 const router = require('express').Router();
 const { body } = require('express-validator');
+const authMiddleware = require('../middlewares/auth-middleware');
 
 // Все вопросы
-router.get('/snippets', snippetsController.getAllSnippets);
+router.get('/snippets', authMiddleware, snippetsController.getAllSnippets);
 // добавить вопросы
 router.post('/add_snippet', snippetsController.createSnippet);
 // Обновление вопроса
