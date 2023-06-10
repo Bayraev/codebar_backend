@@ -3,7 +3,7 @@ const tokenModel = require('../../models/tokenModel'); // need to save up tokens
 
 module.exports.TokenService = {
   generateTokens: (payload) => {
-    const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_TOKEN, { expiresIn: '20s' });
+    const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_TOKEN, { expiresIn: '30d' });
     const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_TOKEN, { expiresIn: '30d' });
     return {
       refreshToken,
