@@ -9,14 +9,20 @@ require('dotenv').config();
 // Since 2cn commit, creating auth for site
 // cookieParser, jsonwebtoken - for generating jwt, bcrypt - cryptography, uuid - generating random stuff for id for exmp
 
-const { MONGO_DB, PORT } = process.env;
+const { MONGO_DB, PORT, CLIENT_URL } = process.env;
 
 app.use(express.json({ extended: true }));
-app.use(cors());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true, //access-control-allow-credentials:true
+    optionSuccessStatus: 200, //? It helped me to allow cors https://my-js.org/docs/cheatsheet/cors/
+  }),
+);
 app.use(morgan('dev'));
 // We can use this route "/api" to got access to this route
 // app.use(require('/api'. './routes/routes'));
-app.use(cookieParser());
 app.use(require('./routes/routes'));
 app.use(errorMiddleware);
 

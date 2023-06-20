@@ -17,7 +17,7 @@ router.delete('/api/snippet/delete/:id', snippetsController.deleteSnippet);
 
 // Auth
 router.post(
-  '/registration',
+  '/api/registration',
   // checking look is it like email or have is it that lenght we need as well
   body('email').isEmail(),
   body('password').isLength({ min: 6, max: 24 }),
