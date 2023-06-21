@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const snippetSchema = mongoose.Schema({
   ownerId: { type: mongoose.Schema.Types.ObjectId, required: true }, // Belongs to [id]
+  uniqId: { type: String, required: true },
   title: { type: String, required: true },
   snippet: { type: String, required: true },
   description: { type: String, required: true },
