@@ -7,6 +7,8 @@ const authMiddleware = require('../middlewares/auth-middleware');
 
 // Все вопросы
 router.get('/api/snippets', authMiddleware, snippetsController.getAllSnippets);
+// Вопросы пользователя
+router.get('/api/snippets/:id', snippetsController.getSnippetsById);
 // добавить вопросы
 router.post('/api/new_snippet', snippetsController.createSnippet);
 // Обновление вопроса

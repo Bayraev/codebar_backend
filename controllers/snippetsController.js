@@ -10,6 +10,19 @@ module.exports.snippetsController = {
     }
   },
 
+  getSnippetsById: async (req, res) => {
+    try {
+      const id = req.params.id;
+      console.log(id);
+      const snippets = await snippetsModel.find({ ownerId: id });
+
+      res.status(200).json(snippets);
+    } catch (error) {
+      console.log('user get snippets err');
+      res.json({ error });
+    }
+  },
+
   createSnippet: async (req, res) => {
     try {
       // REQUEST from front
@@ -18,9 +31,12 @@ module.exports.snippetsController = {
       // Creating new model for DB
       const snippetModel = await snippetsModel.create({
         // assigning these keys with information from request
-        snippet,
+        ownerId,
+        uniqId,
         title,
+        snippet,
         description,
+        tags,
       });
 
       res.status(200).json(snippetModel);
