@@ -72,10 +72,9 @@ module.exports.userService = {
     if (!refreshToken) {
       throw ApiError.UnaгthorizedError();
     }
-
-    const userData = TokenService.validateAccessToken(refreshToken); // sent to validation. Gives back token with id etc.
-    const tokenFromDb = await TokenService.findOne(refreshToken); // gives back old token (need to check, validated our user or not)
-
+    //! error here ig:
+    const userData = TokenService.validateRefreshToken(refreshToken); // sent to validation. Gives back token with id etc.
+    const tokenFromDb = await TokenService.findToken(refreshToken); // gives back old token (need to check, validated our user or not)
     if (!userData || !tokenFromDb) {
       throw ApiError.UnaгthorizedError();
     }
