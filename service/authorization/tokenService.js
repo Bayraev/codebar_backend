@@ -46,4 +46,9 @@ module.exports.TokenService = {
     const tokenData = await tokenModel.deleteOne({ refreshToken });
     return tokenData;
   },
+
+  findToken: async (refreshToken) => {
+    const tokenData = await tokenModel.findOne({ refreshToken });
+    return tokenData;
+  },
 };
