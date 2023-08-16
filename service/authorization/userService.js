@@ -43,7 +43,8 @@ module.exports.userService = {
       throw ApiError.BadRequest(`User with ${email} email doesn't exist`);
     }
 
-    const IsPasswordEquals = bcrypt.compare(password, user.password);
+    const IsPasswordEquals = await bcrypt.compare(password, user.password);
+    console.log(IsPasswordEquals);
     if (!IsPasswordEquals) {
       throw ApiError.BadRequest('Wrong password');
     }
