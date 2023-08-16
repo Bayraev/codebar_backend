@@ -28,7 +28,6 @@ module.exports.snippetsController = {
       // REQUEST from front
       const { snippet, title, description, ownerId, uniqId, tags } = req.body;
 
-      console.log('Tryna3: ', snippet, title, description, ownerId, uniqId, tags);
       // Creating new model for DB
       const snippetModel = await snippetsModel.create({
         // assigning these keys with information from request
