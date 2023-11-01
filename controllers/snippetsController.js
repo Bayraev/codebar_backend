@@ -13,7 +13,6 @@ module.exports.snippetsController = {
   getSnippetsById: async (req, res) => {
     try {
       const id = req.params.id;
-      console.log(id);
       const snippets = await snippetsModel.find({ ownerId: id });
 
       res.status(200).json(snippets);
