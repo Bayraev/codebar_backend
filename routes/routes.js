@@ -8,13 +8,13 @@ const authMiddleware = require('../middlewares/auth-middleware');
 // Все вопросы
 router.get('/api/snippets', authMiddleware, snippetsController.getAllSnippets);
 // Вопросы пользователя
-router.get('/api/snippets/:id', snippetsController.getSnippetsById);
+router.get('/api/snippets/:id', authMiddleware, snippetsController.getSnippetsById);
 // добавить вопросы
 router.post('/api/new_snippet', authMiddleware, snippetsController.createSnippet);
 // Обновление вопроса
-router.patch('/api/snippet/patch/:id', snippetsController.updateQuestion);
+router.patch('/api/snippet/patch/:id', authMiddleware, snippetsController.updateQuestion);
 // Удаление вопроса
-router.delete('/api/snippet/delete/:id', snippetsController.deleteSnippet);
+router.delete('/api/snippet/delete/:id', authMiddleware, snippetsController.deleteSnippet);
 // // Удаление вопроса
 
 // Auth
