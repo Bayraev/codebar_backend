@@ -4,7 +4,8 @@
   "description": "Tool for coders",
   "main": "index.js",
   "scripts": {
-    "serve": "nodemon server.js"
+    "dev": "nodemon index.js",
+    "build": "npm i"
   },
   "keywords": [
     "codebar"
