@@ -15,7 +15,7 @@ app.use(express.json({ extended: true }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: `${CLIENT_URL}`,
     credentials: true, //access-control-allow-credentials:true
     optionSuccessStatus: 200, //? It helped me to allow cors https://my-js.org/docs/cheatsheet/cors/
   }),
