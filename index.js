@@ -11,11 +11,12 @@ require('dotenv').config();
 
 const { MONGO_DB, PORT, CLIENT_URL, CLIENT_URL2 } = process.env;
 
+console.log(CLIENT_URL);
 app.use(express.json({ extended: true }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: [`${CLIENT_URL}`, [`${CLIENT_URL2}`]],
+    origin: [`${CLIENT_URL}`, `${CLIENT_URL2}`],
     credentials: true, //access-control-allow-credentials:true
     optionSuccessStatus: 200, //? It helped me to allow cors https://my-js.org/docs/cheatsheet/cors/
   }),
