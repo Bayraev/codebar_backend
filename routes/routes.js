@@ -4,6 +4,7 @@ const { usersController } = require('../controllers/userController');
 const router = require('express').Router();
 const { body } = require('express-validator');
 const authMiddleware = require('../middlewares/auth-middleware');
+const { contactsController } = require('../controllers/contactsController');
 
 // Все вопросы
 router.get('/api/snippets', authMiddleware, snippetsController.getAllSnippets);
@@ -29,4 +30,10 @@ router.post('/api/login', usersController.login);
 router.post('/api/logout', usersController.logout);
 router.get('/api/activate/:link', usersController.activate); // endpoint for acc activation by link
 router.get('/api/refresh', usersController.refresh); // it gets new access and refresh tokens
+
+// messages (alideveloper-portfolio yet)
+router.get('/api/contact_messages', contactsController.getAllMessages);
+router.get('/api/contact_messages/:email', contactsController.getMessagesByContactEmail);
+router.post('/api/new_message', contactsController.createMessagesAndContact);
+
 module.exports = router;

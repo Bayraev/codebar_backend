@@ -9,6 +9,7 @@ module.exports = function (err, req, res, next) {
     // we got err.status from ApiError constructor
     return res.status(err.status).json({ message: err.message, errors: err.errors });
   }
+
   // well if error is not detected but its an error, we return server error (500)
   return res.status(500).json('Непредвиденная ошибка');
 };
